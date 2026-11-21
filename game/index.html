@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solara Bay — an open-world crime game</title>
+<link rel="stylesheet" href="./src/style.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
+</head>
+<body>
+<div id="screen-game" class="screen active">
+  <canvas id="game" aria-label="Solara Bay: drive, walk, run missions and lose the heat"></canvas>
+  <div id="hud"></div>
+</div>
+<div id="screen-title" class="screen"></div>
+<div id="screen-meta" class="screen"></div>
+<p id="status" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;"></p>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

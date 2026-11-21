@@ -1,0 +1,194 @@
+/* SOLARA BAY — HUD + screens. Dark glass panels, amber accents, teal cash. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; background: #0d1420; font-family: 'Arial Black', Arial, sans-serif; }
+#game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+.screen { position: fixed; inset: 0; display: none; }
+.screen.active { display: block; }
+.panel { background: rgba(10, 16, 24, 0.82); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 6px; color: #eef4f2; backdrop-filter: blur(2px); }
+
+/* --- mission card (top-left) --- */
+#mission-card { position: absolute; top: 10px; left: 14px; width: 300px; padding: 8px 10px; border-left: 4px solid #f2c230; }
+.mc-chapter { color: #f2c230; font-size: 11px; letter-spacing: 1px; }
+.mc-stage { display: flex; justify-content: space-between; margin-top: 4px; }
+#mc-stage { background: #f2c230; color: #111; font-size: 11px; padding: 2px 7px; border-radius: 3px; }
+.mc-timer { background: #e84a3f; color: #fff; font-size: 13px; padding: 2px 8px; border-radius: 3px; }
+.mc-timer:empty { display: none; }
+.mc-title { font-size: 20px; margin-top: 4px; letter-spacing: 0.5px; }
+.mc-bar { height: 7px; background: #26313d; border-radius: 4px; margin-top: 6px; overflow: hidden; }
+#mc-bar-fill { height: 100%; background: linear-gradient(90deg, #3fa7a0, #7ad0a8); width: 20%; }
+.mc-obj { font-size: 13px; font-family: Arial, sans-serif; font-weight: bold; margin-top: 7px; }
+.mc-next { font-size: 11px; color: #9fd8c8; margin-top: 3px; font-family: Arial, sans-serif; }
+
+/* --- crew chips (sunset pattern, under mission card) --- */
+#crew-chips { position: absolute; top: 134px; left: 14px; display: flex; gap: 6px; }
+.chip { display: flex; align-items: center; gap: 5px; background: rgba(10, 16, 24, 0.85); border: 1px solid rgba(255,255,255,0.16); border-radius: 5px; padding: 3px 6px; color: #eef4f2; font-size: 10px; }
+.chip-key { background: #f2c230; color: #111; border-radius: 3px; padding: 1px 5px; font-size: 10px; }
+.chip-init { background: #3f7fb5; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 9px; }
+.chip-timer { color: #f2c230; font-size: 10px; }
+
+/* --- top-right: clock, cash, stars, rank --- */
+#top-right { position: absolute; top: 12px; right: 14px; text-align: right; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+#clock { font-size: 15px; color: #cfe0d8; }
+#cash { font-size: 34px; color: #4de3a5; letter-spacing: 0.5px; }
+#stars { font-size: 22px; color: #f2c230; letter-spacing: 3px; line-height: 1; }
+#stars::first-letter { color: #f2c230; }
+#wanted-tag { display: inline-block; background: #e84a3f; font-size: 11px; padding: 2px 8px; border-radius: 3px; margin-top: 3px; }
+#wanted-tag:empty { display: none; }
+#rank-line { margin-top: 5px; font-size: 13px; }
+#rank-badge { background: #3fa7a0; padding: 2px 7px; border-radius: 3px; font-size: 11px; }
+#rank-name { color: #f2c230; }
+#xp-bar { width: 190px; height: 6px; background: rgba(255,255,255,0.25); border-radius: 3px; margin: 5px 0 2px auto; overflow: hidden; }
+#xp-fill { height: 100%; background: #3fa7a0; width: 50%; }
+#xp-text { font-size: 11px; font-family: Arial, sans-serif; color: #dfe9e4; }
+
+/* --- police panel --- */
+#police-panel { position: absolute; top: 164px; left: 14px; width: 280px; padding: 6px 9px; }
+.pp-head { display: flex; justify-content: space-between; color: #ff8a7a; font-size: 11px; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 4px; }
+.pp-row { display: flex; align-items: center; gap: 6px; font-family: Arial, sans-serif; font-size: 11px; padding: 2px 0; }
+.pp-row b { width: 64px; }
+.pp-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.pp-role { padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: bold; }
+.pp-role.RAMMING { background: #e84a3f; color: #fff; }
+.pp-role.PURSUIT { background: #3f7fb5; color: #fff; }
+.pp-role.FLANKING { background: #f2a541; color: #111; }
+.pp-role.ROADBLOCK { background: #8a5fd0; color: #fff; }
+.pp-role.SPOTLIGHT { background: #3fa7a0; color: #fff; }
+.pp-role.FIRING { background: #ff2a1a; color: #fff; }
+.pp-dist { margin-left: auto; color: #cfe0d8; }
+.pp-more { font-size: 11px; color: #f2c230; padding-top: 2px; }
+#pp-feed { font-family: Arial, sans-serif; font-size: 11px; color: #9fd8c8; border-top: 1px solid rgba(255,255,255,0.15); margin-top: 5px; padding-top: 5px; }
+
+/* --- weapons (right, under cash) --- */
+#weapons { position: absolute; top: 206px; right: 14px; display: flex; gap: 5px; }
+.weapon { width: 58px; background: rgba(10, 16, 24, 0.85); border: 1px solid rgba(255,255,255,0.16); border-radius: 5px; color: #eef4f2; text-align: center; padding: 5px 2px 4px; position: relative; }
+.weapon.active { border-color: #f2c230; box-shadow: 0 0 0 1px #f2c230; }
+.w-num { position: absolute; top: 2px; left: 4px; font-size: 9px; color: #9fb3ad; }
+.w-icon { font-size: 13px; color: #f2c230; margin-top: 6px; }
+.w-name { font-size: 9px; margin-top: 2px; }
+.w-ammo { font-size: 11px; color: #4de3a5; font-family: Arial, sans-serif; font-weight: bold; }
+
+/* --- crew cards --- */
+#crew-cards { position: absolute; top: 278px; right: 14px; display: flex; flex-direction: column; gap: 5px; width: 200px; }
+.crew-card { display: flex; align-items: center; gap: 7px; background: rgba(10, 16, 24, 0.85); border: 1px solid rgba(255,255,255,0.16); border-radius: 5px; padding: 4px 7px; color: #eef4f2; }
+.crew-initials { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex: none; }
+.crew-ability { font-size: 11px; color: #f2c230; }
+.crew-name { font-size: 9px; font-family: Arial, sans-serif; color: #cfe0d8; }
+.crew-key { margin-left: auto; background: #26313d; border: 1px solid #556; border-radius: 3px; padding: 2px 6px; font-size: 11px; }
+
+/* --- district card + minimap (bottom-left) --- */
+#district-card { position: absolute; left: 14px; top: 304px; width: 210px; padding: 6px 9px; }
+#dc-name { font-size: 17px; color: #fff; }
+#dc-sub { font-size: 11px; font-family: Arial, sans-serif; color: #cfe0d8; }
+#dc-meter { margin-top: 5px; font-size: 11px; display: flex; align-items: center; gap: 7px; }
+.dc-bar { flex: 1; height: 7px; background: #26313d; border-radius: 4px; overflow: hidden; }
+#dc-fill { height: 100%; background: #4de3a5; width: 58%; }
+#dc-hint { font-size: 10px; color: #7ad0a8; margin-top: 5px; letter-spacing: 0.5px; }
+#minimap-wrap { position: absolute; left: 14px; top: 378px; width: 120px; height: 120px; border: 3px solid #f2c230; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.5); }
+#minimap { width: 100%; height: 100%; display: block; }
+#mm-label { position: absolute; top: 4px; right: 8px; color: #fff; font-size: 12px; text-shadow: 0 1px 3px #000; }
+
+/* --- vitals --- */
+#vitals { position: absolute; left: 14px; bottom: 6px; width: 170px; padding: 6px 8px; }
+.vit-row { display: flex; align-items: center; gap: 6px; font-size: 10px; margin: 2px 0; }
+.vit-row span { width: 52px; }
+.vit-bar { flex: 1; height: 9px; background: #26313d; border-radius: 4px; overflow: hidden; }
+.vit-bar div { height: 100%; background: #4de3a5; }
+.vit-bar.blue div { background: #3fa7a0; }
+.vit-row b { width: 26px; text-align: right; font-family: Arial, sans-serif; }
+
+/* --- dialogue (bottom-centre) --- */
+#dialogue { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: 440px; display: none; padding: 9px 11px; gap: 10px; align-items: flex-start; border-left: 4px solid #3fa7a0; }
+#dlg-initials { width: 44px; height: 44px; border-radius: 6px; background: #3f7fb5; display: flex; align-items: center; justify-content: center; font-size: 15px; flex: none; }
+#dlg-name { color: #4de3a5; font-size: 13px; }
+#dlg-name span { color: #9fb3ad; font-size: 11px; font-family: Arial, sans-serif; }
+#dlg-text { font-family: Arial, sans-serif; font-size: 14px; line-height: 1.35; margin-top: 3px; }
+
+/* --- speedo (bottom-right) --- */
+#speedo { position: absolute; right: 16px; bottom: 10px; text-align: right; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.7); }
+#speed-num { font-size: 52px; line-height: 0.95; }
+#speed-unit { font-size: 13px; color: #f2c230; letter-spacing: 2px; }
+#speed-car { font-size: 15px; color: #4de3a5; margin-top: 2px; }
+#cond-bar { width: 210px; height: 8px; background: rgba(255,255,255,0.25); border-radius: 4px; margin: 5px 0 3px auto; overflow: hidden; }
+#cond-fill { height: 100%; background: #f2c230; width: 98%; }
+#cond-text { font-size: 11px; font-family: Arial, sans-serif; }
+
+/* --- radio + hints + toast --- */
+#radio { position: absolute; right: 14px; top: 176px; color: #fff; font-family: Arial, sans-serif; font-size: 12px; text-shadow: 0 1px 3px #000; text-align: right; }
+#hint-line { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.75); font-family: Arial, sans-serif; font-size: 11px; text-shadow: 0 1px 3px #000; }
+#toast { position: absolute; top: 46%; left: 50%; transform: translateX(-50%); background: rgba(10,16,24,0.9); border: 1px solid #f2c230; color: #f2c230; padding: 10px 18px; border-radius: 6px; font-size: 15px; opacity: 0; transition: opacity 0.3s; pointer-events: none; text-align: center; }
+#objective-marker { position: absolute; top: 50%; left: 50%; color: #f2c230; font-size: 22px; display: none; text-shadow: 0 0 8px #000; }
+
+/* --- title screen --- */
+#screen-title { background: linear-gradient(160deg, rgba(13,20,32,0.25), rgba(13,20,32,0.88)); color: #fff; display: none; align-items: center; justify-content: center; }
+#screen-title.active { display: flex; }
+.title-inner { text-align: center; max-width: 640px; padding: 20px; }
+.title-kicker { color: #f2c230; letter-spacing: 4px; font-size: 13px; }
+.title-inner h1 { font-size: 92px; line-height: 0.95; letter-spacing: 2px; text-shadow: 0 6px 30px rgba(0,0,0,0.7); margin: 10px 0; }
+.title-sub { font-family: Arial, sans-serif; font-size: 16px; color: #dfe9e4; }
+#play-btn { margin: 22px 0 16px; font-family: inherit; font-size: 22px; background: #f2c230; color: #111; border: none; border-radius: 6px; padding: 14px 44px; cursor: pointer; }
+#play-btn:hover { background: #ffd94d; }
+.title-missions { text-align: left; font-family: Arial, sans-serif; font-size: 13px; background: rgba(10,16,24,0.8); border-radius: 6px; padding: 10px 14px; }
+.title-missions div { padding: 2px 0; }
+.title-missions b { color: #f2c230; margin-right: 6px; }
+.title-missions span { float: right; color: #4de3a5; }
+.title-controls, .title-note { font-family: Arial, sans-serif; font-size: 12px; color: #cfe0d8; margin-top: 10px; }
+
+/* --- meta screen (MAP / STATS) --- */
+#screen-meta { background: rgba(8, 12, 18, 0.96); color: #eef4f2; overflow-y: auto; padding: 12px 20px 8px; }
+#screen-meta.shot .meta-foot { display: none; }
+.meta-top { display: flex; align-items: center; gap: 18px; border-bottom: 2px solid #f2c230; padding-bottom: 8px; }
+.meta-title { font-size: 28px; color: #f2c230; letter-spacing: 1px; }
+.meta-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+.meta-tab { font-family: inherit; font-size: 13px; background: transparent; color: #cfe0d8; border: none; padding: 7px 12px; cursor: pointer; border-radius: 4px; }
+.meta-tab.active { background: #e84a3f; color: #fff; }
+.meta-cash { margin-left: auto; font-size: 26px; color: #4de3a5; }
+.meta-body { display: flex; gap: 12px; margin-top: 8px; align-items: flex-start; }
+.meta-col { display: flex; flex-direction: column; gap: 8px; }
+.meta-col.left { width: 250px; flex: none; }
+.meta-col.mid { flex: 1; }
+.meta-col.right { width: 300px; flex: none; }
+.meta-col.wide { flex: 1; }
+.meta-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 11px; }
+.meta-card-title { color: #f2c230; font-size: 13px; letter-spacing: 1px; margin-bottom: 6px; }
+.ring-card { text-align: center; }
+.ring { width: 96px; height: 96px; }
+.ring-bg { fill: none; stroke: #26313d; stroke-width: 11; }
+.ring-fg { fill: none; stroke: #f2c230; stroke-width: 11; stroke-linecap: round; transform: rotate(-90deg); transform-origin: center; }
+.ring-pct { fill: #fff; font-size: 22px; font-weight: bold; text-anchor: middle; font-family: Arial, sans-serif; }
+.ring-lbl { fill: #9fb3ad; font-size: 10px; text-anchor: middle; letter-spacing: 1px; }
+.progress-list { text-align: left; margin-top: 8px; }
+.pr-row { display: flex; align-items: center; gap: 6px; font-family: Arial, sans-serif; font-size: 11px; padding: 2px 0; }
+.pr-row span { width: 108px; }
+.pr-bar { flex: 1; height: 7px; background: #26313d; border-radius: 4px; overflow: hidden; }
+.pr-bar div { height: 100%; background: #3fa7a0; }
+.pr-row b { width: 44px; text-align: right; }
+.ratings { display: flex; gap: 8px; justify-content: center; }
+.rating { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #556; display: flex; align-items: center; justify-content: center; font-size: 11px; position: relative; background: #1a222c; }
+.rating span { position: absolute; bottom: -7px; right: -3px; background: #f2c230; color: #111; font-size: 9px; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; }
+.rating.gold { border-color: #f2c230; }
+.rating.silver { border-color: #cfe0d8; }
+.rating.bronze { border-color: #d97b2f; }
+.rating.none { opacity: 0.5; }
+.map-card { padding: 8px; }
+#meta-map { width: 100%; height: auto; display: block; border-radius: 6px; }
+.map-caption { font-family: Arial, sans-serif; font-size: 12px; color: #9fd8c8; padding: 7px 4px 2px; }
+.rank-bar { height: 8px; background: #26313d; border-radius: 4px; overflow: hidden; }
+.rank-bar div { height: 100%; background: #f2a541; }
+.rank-sub { font-family: Arial, sans-serif; font-size: 12px; color: #cfe0d8; margin-top: 5px; }
+.career-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 12px; }
+.career-grid b { display: block; font-size: 18px; color: #fff; }
+.career-grid span { font-family: Arial, sans-serif; font-size: 10px; color: #9fb3ad; letter-spacing: 0.5px; }
+.ws-quote { font-family: Arial, sans-serif; font-size: 12px; color: #9fd8c8; margin-bottom: 8px; }
+.ws-row { display: flex; align-items: center; gap: 8px; font-family: Arial, sans-serif; font-size: 12px; padding: 4px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.ws-row.selected { background: rgba(242,194,48,0.12); border: 1px solid #f2c230; border-radius: 4px; }
+.ws-tag { background: #3fa7a0; color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 3px; min-width: 38px; text-align: center; }
+.ws-state { margin-left: auto; color: #f2c230; font-weight: bold; }
+.ws-state.owned { color: #4de3a5; }
+.ws-state.locked { color: #ff8a7a; }
+.meta-btn { width: 100%; margin-top: 8px; font-family: inherit; font-size: 14px; background: #f2c230; color: #111; border: none; border-radius: 5px; padding: 8px; cursor: pointer; }
+.save-row { display: flex; justify-content: space-between; align-items: center; font-family: Arial, sans-serif; font-size: 10px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.save-btn { font-family: inherit; font-size: 11px; background: transparent; color: #f2c230; border: 1px solid #f2c230; border-radius: 4px; padding: 4px 10px; cursor: pointer; }
+.story-row { display: flex; gap: 12px; align-items: baseline; font-family: Arial, sans-serif; font-size: 13px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.story-ch { color: #f2c230; font-size: 11px; white-space: nowrap; }
+.story-cash { margin-left: auto; color: #4de3a5; font-weight: bold; }
+.meta-foot { font-family: Arial, sans-serif; font-size: 12px; color: #9fb3ad; margin-top: 12px; }
